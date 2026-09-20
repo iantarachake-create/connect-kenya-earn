@@ -1,24 +1,28 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, CheckCircle2, Eye, Landmark, ShieldCheck, Sparkles, Users } from "lucide-react";
+import { PublicShell } from "@/components/public-shell";
+import { OpportunityCard } from "@/components/opportunity-card";
+import { Button } from "@/components/ui/button";
+import { opportunities } from "@/lib/content";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head:()=>({meta:[{title:"EARNPESA — Verified Digital Opportunities in Kenya"},{name:"description",content:"Discover verified campaigns, complete digital activities, refer friends and earn transparent rewards in Kenya."},{property:"og:title",content:"EARNPESA — Connect. Refer. Earn."},{property:"og:description",content:"Kenya's trusted marketplace for verified digital opportunities and rewards."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}]}), component:Home
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+function Home(){return <PublicShell>
+  <section className="relative overflow-hidden border-b bg-foreground text-background">
+    <div className="page-shell grid min-h-[660px] items-center gap-12 py-16 lg:grid-cols-[1.15fr_.85fr] lg:py-20">
+      <div className="reveal"><div className="mb-6 inline-flex items-center gap-2 rounded-full border border-background/20 px-3 py-1.5 text-xs font-bold"><ShieldCheck className="size-4 text-gold"/> Kenya-first. Verified. Transparent.</div>
+      <h1 className="max-w-3xl text-balance text-5xl font-extrabold leading-[1.05] sm:text-6xl lg:text-7xl">Connect. Refer. <span className="text-gold">Earn.</span></h1>
+      <p className="mt-6 max-w-2xl text-balance text-lg leading-8 text-background/70">Discover legitimate opportunities, complete campaigns, refer friends and earn rewards—without deposits or guaranteed-return promises.</p>
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Button asChild size="lg" variant="hero"><Link to="/auth" search={{mode:"signup"}}>Join EARNPESA <ArrowRight/></Link></Button><Button asChild size="lg" variant="outline" className="border-background/25 bg-transparent text-background hover:bg-background/10 hover:text-background"><Link to="/opportunities">Explore opportunities</Link></Button></div>
+      <div className="mt-10 flex flex-wrap gap-x-7 gap-y-3 text-sm text-background/65"><span className="flex items-center gap-2"><CheckCircle2 className="size-4 text-gold"/> No deposits</span><span className="flex items-center gap-2"><CheckCircle2 className="size-4 text-gold"/> Verified actions</span><span className="flex items-center gap-2"><CheckCircle2 className="size-4 text-gold"/> M-Pesa withdrawals</span></div></div>
+      <div className="reveal relative"><div className="premium-shadow rounded-lg border border-background/15 bg-background p-6 text-foreground sm:p-8"><p className="text-sm font-semibold text-muted-foreground">Available balance</p><p className="mt-2 font-display text-4xl font-extrabold sm:text-5xl">KES 8,420</p><div className="mt-6 grid grid-cols-2 gap-3"><div className="rounded-md bg-muted p-4"><p className="text-xs text-muted-foreground">Pending rewards</p><p className="mt-1 text-lg font-bold">KES 1,280</p></div><div className="rounded-md bg-secondary p-4"><p className="text-xs text-muted-foreground">This month</p><p className="mt-1 text-lg font-bold text-primary">+ KES 3,650</p></div></div><div className="mt-6 space-y-4"><div className="flex justify-between text-sm"><span>Survey approved</span><strong className="text-success">+ KES 120</strong></div><div className="flex justify-between text-sm"><span>Referral qualified</span><strong className="text-success">+ KES 250</strong></div><div className="flex justify-between text-sm"><span>M-Pesa withdrawal</span><strong>− KES 1,000</strong></div></div></div></div>
     </div>
-  );
-}
+  </section>
+  <section className="border-b bg-card py-8"><div className="page-shell grid grid-cols-2 gap-7 lg:grid-cols-4">{[["18,420+","Members"],["KES 12.8M","Rewards verified"],["86","Live campaigns"],["94%","Approval rate"]].map(([n,l])=><div key={l}><p className="font-display text-2xl font-extrabold">{n}</p><p className="text-sm text-muted-foreground">{l}</p></div>)}</div></section>
+  <section className="page-shell py-20"><div className="flex items-end justify-between gap-6"><div><p className="text-sm font-bold uppercase text-primary">Featured now</p><h2 className="mt-2 text-3xl font-bold sm:text-4xl">Opportunities worth your time</h2></div><Button asChild variant="ghost" className="hidden sm:flex"><Link to="/opportunities">Browse all <ArrowRight/></Link></Button></div><div className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-4">{opportunities.map(o=><OpportunityCard key={o.title} item={o}/>)}</div></section>
+  <section className="bg-muted py-20"><div className="page-shell"><div className="max-w-xl"><p className="text-sm font-bold uppercase text-primary">How it works</p><h2 className="mt-2 text-3xl font-bold">A clear path from action to reward</h2></div><div className="mt-10 grid gap-8 md:grid-cols-4">{[{Icon:Eye,title:"Discover",copy:"Browse opportunities with clear requirements."},{Icon:Sparkles,title:"Complete",copy:"Follow the campaign steps and submit proof."},{Icon:ShieldCheck,title:"Verify",copy:"The business and EARNPESA review your action."},{Icon:Landmark,title:"Withdraw",copy:"Move available rewards to your M-Pesa."}].map(({Icon,title,copy},i)=><div key={title}><span className="mb-5 grid size-11 place-items-center rounded-md bg-card text-primary shadow-sm"><Icon className="size-5"/></span><p className="text-xs font-bold text-gold">0{i+1}</p><h3 className="mt-1 text-lg font-bold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{copy}</p></div>)}</div></div></section>
+  <section className="page-shell grid gap-12 py-20 lg:grid-cols-2"><div><p className="text-sm font-bold uppercase text-primary">For businesses</p><h2 className="mt-2 text-3xl font-bold">Turn attention into measurable action.</h2><p className="mt-4 max-w-xl leading-7 text-muted-foreground">Fund transparent campaigns, reach a Kenya-first audience, verify participation and measure conversion from one workspace.</p><Button asChild className="mt-7"><Link to="/businesses">Explore business solutions <ArrowRight/></Link></Button></div><div className="grid grid-cols-2 gap-4"><div className="rounded-lg border bg-card p-5"><Users className="text-primary"/><p className="mt-8 text-2xl font-bold">3,840</p><p className="text-sm text-muted-foreground">Qualified actions</p></div><div className="rounded-lg border bg-secondary p-5"><ShieldCheck className="text-primary"/><p className="mt-8 text-2xl font-bold">91%</p><p className="text-sm text-muted-foreground">Verified conversion</p></div></div></section>
+  <section className="bg-primary py-16 text-primary-foreground"><div className="page-shell flex flex-col items-start justify-between gap-7 md:flex-row md:items-center"><div><p className="font-display text-3xl font-extrabold">Ready to earn transparently?</p><p className="mt-2 text-primary-foreground/75">Your next verified opportunity is waiting.</p></div><Button asChild size="lg" variant="gold"><Link to="/auth" search={{mode:"signup"}}>Create free account <ArrowRight/></Link></Button></div></section>
+ </PublicShell>}
