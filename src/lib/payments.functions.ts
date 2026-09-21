@@ -82,8 +82,6 @@ export const startRegistrationPayment = createServerFn({ method: "POST" })
       return { ok: false, status: "failed", message: "We could not reach the payment service. Please try again." };
     }
 
-    await supabase.rpc; // no-op to keep supabase referenced for RLS client typing
-
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const chargeStatus = payload?.data?.status ?? "failed";
     const succeeded = chargeStatus === "success";
