@@ -10,13 +10,26 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BusinessesRouteImport } from './routes/businesses'
+import { Route as HelpRouteImport } from './routes/help'
+import { Route as LearnRouteImport } from './routes/learn'
 import { Route as OpportunitiesRouteImport } from './routes/opportunities'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ReferRouteImport } from './routes/refer'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TrustRouteImport } from './routes/trust'
+import { Route as WithdrawalPolicyRouteImport } from './routes/withdrawal-policy'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BusinessesRoute = BusinessesRouteImport.update({
@@ -24,9 +37,24 @@ const BusinessesRoute = BusinessesRouteImport.update({
   path: '/businesses',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnRoute = LearnRouteImport.update({
+  id: '/learn',
+  path: '/learn',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OpportunitiesRoute = OpportunitiesRouteImport.update({
   id: '/opportunities',
   path: '/opportunities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReferRoute = ReferRouteImport.update({
@@ -34,39 +62,128 @@ const ReferRoute = ReferRouteImport.update({
   path: '/refer',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrustRoute = TrustRouteImport.update({
+  id: '/trust',
+  path: '/trust',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WithdrawalPolicyRoute = WithdrawalPolicyRouteImport.update({
+  id: '/withdrawal-policy',
+  path: '/withdrawal-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/businesses': typeof BusinessesRoute
+  '/help': typeof HelpRoute
+  '/learn': typeof LearnRoute
   '/opportunities': typeof OpportunitiesRoute
+  '/privacy': typeof PrivacyRoute
   '/refer': typeof ReferRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/terms': typeof TermsRoute
+  '/trust': typeof TrustRoute
+  '/withdrawal-policy': typeof WithdrawalPolicyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/businesses': typeof BusinessesRoute
+  '/help': typeof HelpRoute
+  '/learn': typeof LearnRoute
   '/opportunities': typeof OpportunitiesRoute
+  '/privacy': typeof PrivacyRoute
   '/refer': typeof ReferRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/terms': typeof TermsRoute
+  '/trust': typeof TrustRoute
+  '/withdrawal-policy': typeof WithdrawalPolicyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/businesses': typeof BusinessesRoute
+  '/help': typeof HelpRoute
+  '/learn': typeof LearnRoute
   '/opportunities': typeof OpportunitiesRoute
+  '/privacy': typeof PrivacyRoute
   '/refer': typeof ReferRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/terms': typeof TermsRoute
+  '/trust': typeof TrustRoute
+  '/withdrawal-policy': typeof WithdrawalPolicyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/businesses' | '/opportunities' | '/refer'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/businesses'
+    | '/help'
+    | '/learn'
+    | '/opportunities'
+    | '/privacy'
+    | '/refer'
+    | '/reset-password'
+    | '/terms'
+    | '/trust'
+    | '/withdrawal-policy'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/businesses' | '/opportunities' | '/refer'
-  id: '__root__' | '/' | '/businesses' | '/opportunities' | '/refer'
+  to:
+    | '/'
+    | '/auth'
+    | '/businesses'
+    | '/help'
+    | '/learn'
+    | '/opportunities'
+    | '/privacy'
+    | '/refer'
+    | '/reset-password'
+    | '/terms'
+    | '/trust'
+    | '/withdrawal-policy'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/businesses'
+    | '/help'
+    | '/learn'
+    | '/opportunities'
+    | '/privacy'
+    | '/refer'
+    | '/reset-password'
+    | '/terms'
+    | '/trust'
+    | '/withdrawal-policy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   BusinessesRoute: typeof BusinessesRoute
+  HelpRoute: typeof HelpRoute
+  LearnRoute: typeof LearnRoute
   OpportunitiesRoute: typeof OpportunitiesRoute
+  PrivacyRoute: typeof PrivacyRoute
   ReferRoute: typeof ReferRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  TermsRoute: typeof TermsRoute
+  TrustRoute: typeof TrustRoute
+  WithdrawalPolicyRoute: typeof WithdrawalPolicyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -78,11 +195,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/businesses': {
       id: '/businesses'
       path: '/businesses'
       fullPath: '/businesses'
       preLoaderRoute: typeof BusinessesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn': {
+      id: '/learn'
+      path: '/learn'
+      fullPath: '/learn'
+      preLoaderRoute: typeof LearnRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/opportunities': {
@@ -92,6 +230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OpportunitiesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/refer': {
       id: '/refer'
       path: '/refer'
@@ -99,14 +244,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReferRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trust': {
+      id: '/trust'
+      path: '/trust'
+      fullPath: '/trust'
+      preLoaderRoute: typeof TrustRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/withdrawal-policy': {
+      id: '/withdrawal-policy'
+      path: '/withdrawal-policy'
+      fullPath: '/withdrawal-policy'
+      preLoaderRoute: typeof WithdrawalPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   BusinessesRoute: BusinessesRoute,
+  HelpRoute: HelpRoute,
+  LearnRoute: LearnRoute,
   OpportunitiesRoute: OpportunitiesRoute,
+  PrivacyRoute: PrivacyRoute,
   ReferRoute: ReferRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  TermsRoute: TermsRoute,
+  TrustRoute: TrustRoute,
+  WithdrawalPolicyRoute: WithdrawalPolicyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
