@@ -368,6 +368,7 @@ export type Database = {
           phone: string | null
           preferences: Json
           referral_code: string
+          registration_paid_at: string | null
           updated_at: string
           verification_status: Database["public"]["Enums"]["verification_status"]
         }
@@ -380,6 +381,7 @@ export type Database = {
           phone?: string | null
           preferences?: Json
           referral_code?: string
+          registration_paid_at?: string | null
           updated_at?: string
           verification_status?: Database["public"]["Enums"]["verification_status"]
         }
@@ -392,6 +394,7 @@ export type Database = {
           phone?: string | null
           preferences?: Json
           referral_code?: string
+          registration_paid_at?: string | null
           updated_at?: string
           verification_status?: Database["public"]["Enums"]["verification_status"]
         }
@@ -444,6 +447,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      registration_payments: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          paid_at: string | null
+          phone: string
+          provider: string
+          provider_reference: string | null
+          raw: Json
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          phone: string
+          provider?: string
+          provider_reference?: string | null
+          raw?: Json
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          phone?: string
+          provider?: string
+          provider_reference?: string | null
+          raw?: Json
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       support_messages: {
         Row: {
