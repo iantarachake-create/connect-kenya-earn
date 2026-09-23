@@ -275,10 +275,10 @@ export const createCampaign = createServerFn({ method: "POST" })
       budget: data.budget,
       participant_limit: data.participant_limit,
       estimated_minutes: data.estimated_minutes,
-      requirements: data.requirements || null,
+      requirements: data.requirements || "No special requirements",
       verification_method: data.verification_method,
-      audience: data.audience || null,
-      ends_at: data.ends_at ? new Date(data.ends_at).toISOString() : null,
+      audience: { description: data.audience || "All Kenyan members" },
+      ends_at: new Date(data.ends_at || Date.now() + 30 * 864e5).toISOString(),
       starts_at: new Date().toISOString(),
       status: data.submit ? "admin_review" : "draft",
     } as never);
