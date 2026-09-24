@@ -299,7 +299,9 @@ export const setCampaignStatus = createServerFn({ method: "POST" })
       resume: [["paused"], "live"],
       complete: [["live", "paused"], "completed"],
     };
-    const [from, to] = allowed[data.action];
+    const rule = allowed[data.action];
+    if (!rule) return { ok: false, message: "Unknown action." };
+    const [from, to] = rule;
     if (!from.includes(c.status)) return { ok: false, message: "That change is not allowed right now." };
     await db.from("campaigns").update({ status: to as never, updated_at: new Date().toISOString() }).eq("id", c.id);
     return { ok: true, message: "Campaign updated." };
