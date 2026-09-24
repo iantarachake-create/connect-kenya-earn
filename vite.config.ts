@@ -7,7 +7,7 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 // Render sets RENDER=true during builds; build a Node server there, keep defaults elsewhere.
-const onRender = process.env.RENDER === "true" || process.env.DEPLOY_TARGET === "node";
+const onRender = process.env["RENDER"] === "true" || process.env["DEPLOY_TARGET"] === "node";
 
 export default defineConfig({
   tanstackStart: {
