@@ -72,7 +72,7 @@ export const startRegistrationPayment = createServerFn({ method: "POST" })
           amount: REGISTRATION_FEE_KES * 100,
           currency: "KES",
           reference,
-          mobile_money: { phone: local, provider: "mpesa" },
+          mobile_money: { phone: `+${intl}`, provider: "mpesa" },
           metadata: { user_id: userId, purpose: "registration_fee" },
         }),
       });
