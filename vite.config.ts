@@ -6,10 +6,14 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+// Render sets RENDER=true during builds; build a Node server there, keep defaults elsewhere.
+const onRender = process.env["RENDER"] === "true" || process.env["DEPLOY_TARGET"] === "node";
+
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  ...(onRender ? { nitro: { preset: "node-server" } } : {}),
 });
