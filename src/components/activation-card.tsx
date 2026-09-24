@@ -28,9 +28,6 @@ export function ActivationCard() {
   const [reference, setReference] = useState<string | null>(null);
   const [note, setNote] = useState("");
 
-  useEffect(() => {
-    if (data?.phone && !phone) setPhone(`0${data.phone.slice(3)}`);
-  }, [data?.phone]);
 
   const pay = useMutation({
     mutationFn: () => start({ data: { phone } }),
@@ -86,7 +83,7 @@ export function ActivationCard() {
             id="mpesa-phone"
             className="mt-2 h-11"
             inputMode="tel"
-            placeholder="0111385747"
+            placeholder="e.g. 0712 345 678"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
