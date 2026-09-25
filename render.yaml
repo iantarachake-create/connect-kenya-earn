@@ -21,7 +21,5 @@ services:
         sync: false
       - key: SUPABASE_PUBLISHABLE_KEY
         sync: false
-      - key: SUPABASE_SERVICE_ROLE_KEY
-        sync: false
       - key: PAYSTACK_SECRET_KEY
         sync: false

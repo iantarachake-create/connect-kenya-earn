@@ -54,7 +54,7 @@ export const startRegistrationPayment = createServerFn({ method: "POST" })
       return { ok: true, status: "success", message: "Your account is already activated." };
     }
 
-    const secret = process.env["PAYSTACK_SECRET_KEY"];
+    const secret = process.env["PAYSTACK_SECRET_KEY"]?.trim().replace(/^['"]|['"]$/g, "");
     if (!secret) {
       return { ok: false, status: "failed", message: "Payments are not configured yet. Please try again later." };
     }
@@ -77,6 +77,14 @@ export const startRegistrationPayment = createServerFn({ method: "POST" })
         }),
       });
       payload = (await response.json()) as typeof payload;
+      if (response.status === 401 || payload?.message?.toLowerCase().includes("invalid key")) {
+        console.error("[paystack] authentication rejected; replace PAYSTACK_SECRET_KEY on the host");
+        return {
+          ok: false,
+          status: "failed",
+          message: "The payment service key needs to be updated. Please contact support.",
+        };
+      }
     } catch (error) {
       console.error("[paystack] charge failed", error);
       return { ok: false, status: "failed", message: "We could not reach the payment service. Please try again." };
@@ -114,7 +122,7 @@ export const confirmRegistrationPayment = createServerFn({ method: "POST" })
   .inputValidator((input: { reference: string }) => input)
   .handler(async ({ data, context }): Promise<ChargeResult> => {
     const { userId } = context;
-    const secret = process.env["PAYSTACK_SECRET_KEY"];
+    const secret = process.env["PAYSTACK_SECRET_KEY"]?.trim().replace(/^['"]|['"]$/g, "");
     if (!secret) return { ok: false, status: "failed", message: "Payments are not configured yet." };
 
     let payload: { data?: { status?: string; gateway_response?: string } } = {};
