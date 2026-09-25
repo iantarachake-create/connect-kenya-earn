@@ -36,27 +36,23 @@ export const Route = createFileRoute("/api/public/paystack-webhook")({
         const reference = payload.data?.reference;
         if (!reference) return new Response("ok");
 
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+        const { createClient } = await import("@supabase/supabase-js");
+        const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
+        const db = createClient(process.env["SUPABASE_URL"]!, key, {
+          auth: { persistSession: false },
+          global: { fetch: (input, init) => {
+            const h = new Headers(init?.headers);
+            if (key.startsWith("sb_") && h.get("Authorization") === `Bearer ${key}`) h.delete("Authorization");
+            h.set("apikey", key);
+            return fetch(input, { ...init, headers: h });
+          } },
+        });
         const success = payload.event === "charge.success" && payload.data?.status === "success";
-        const now = new Date().toISOString();
-
-        const { data: row } = await supabaseAdmin
-          .from("registration_payments")
-          .update({ status: success ? "success" : "failed", paid_at: success ? now : null, updated_at: now })
-          .eq("provider_reference", reference)
-          .select("user_id")
-          .maybeSingle();
-
-        const userId = row?.user_id ?? payload.data?.metadata?.user_id;
-        if (success && userId) {
-          await supabaseAdmin.from("profiles").update({ registration_paid_at: now }).eq("id", userId);
-          await supabaseAdmin.from("notifications").insert({
-            user_id: userId,
-            category: "payment",
-            title: "Account activated",
-            message: "Your KSH 300 registration fee was received. You can now start earning.",
-          });
-        }
+        const { error } = await db.rpc("record_registration_payment" as never, {
+          _token: secret, _reference: reference, _status: success ? "success" : "failed",
+          _user_id: payload.data?.metadata?.user_id ?? null,
+        } as never);
+        if (error) console.error("[webhook] record failed", error.message);
 
         return new Response("ok");
       },
