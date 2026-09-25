@@ -82,34 +82,22 @@ export const startRegistrationPayment = createServerFn({ method: "POST" })
       return { ok: false, status: "failed", message: "We could not reach the payment service. Please try again." };
     }
 
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const chargeStatus = payload?.data?.status ?? "failed";
     const succeeded = chargeStatus === "success";
+    const ref = payload?.data?.reference ?? reference;
+    const rec = await supabase.rpc("record_registration_payment" as never, {
+      _token: secret, _reference: ref, _user_id: userId, _amount: REGISTRATION_FEE_KES, _phone: intl,
+      _status: succeeded ? "success" : payload?.status ? "pending" : "failed", _raw: (payload ?? {}) as never,
+    } as never);
+    if (rec.error) console.error("[payments] record failed", rec.error.message);
 
-    await supabaseAdmin.from("registration_payments").insert({
-      user_id: userId,
-      amount: REGISTRATION_FEE_KES,
-      phone: intl,
-      provider_reference: payload?.data?.reference ?? reference,
-      status: succeeded ? "success" : payload?.status ? "pending" : "failed",
-      raw: (payload ?? {}) as never,
-      paid_at: succeeded ? new Date().toISOString() : null,
-    });
-
-    if (succeeded) {
-      await supabaseAdmin
-        .from("profiles")
-        .update({ registration_paid_at: new Date().toISOString(), phone: intl })
-        .eq("id", userId);
-      return { ok: true, status: "success", reference, message: "Payment received. Your account is activated." };
-    }
+    if (succeeded) return { ok: true, status: "success", reference: ref, message: "Payment received. Your account is activated." };
 
     if (!payload?.status) {
       console.error("[paystack] charge rejected", payload?.message);
       return { ok: false, status: "failed", message: payload?.message ?? "The payment could not be started." };
     }
 
-    await supabaseAdmin.from("profiles").update({ phone: intl }).eq("id", userId);
     return {
       ok: true,
       status: "pending",
@@ -141,25 +129,13 @@ export const confirmRegistrationPayment = createServerFn({ method: "POST" })
     }
 
     const status = payload.data?.status;
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-
-    if (status === "success") {
-      await supabaseAdmin
-        .from("registration_payments")
-        .update({ status: "success", paid_at: new Date().toISOString(), updated_at: new Date().toISOString() })
-        .eq("provider_reference", data.reference);
-      await supabaseAdmin
-        .from("profiles")
-        .update({ registration_paid_at: new Date().toISOString() })
-        .eq("id", userId);
-      return { ok: true, status: "success", message: "Payment confirmed. Your account is activated." };
-    }
-
-    if (status === "failed" || status === "reversed") {
-      await supabaseAdmin
-        .from("registration_payments")
-        .update({ status: "failed", updated_at: new Date().toISOString() })
-        .eq("provider_reference", data.reference);
+    const final = status === "success" ? "success" : status === "failed" || status === "reversed" ? "failed" : null;
+    if (final) {
+      const rec = await context.supabase.rpc("record_registration_payment" as never, {
+        _token: secret, _reference: data.reference, _user_id: userId, _status: final,
+      } as never);
+      if (rec.error) console.error("[payments] record failed", rec.error.message);
+      if (final === "success") return { ok: true, status: "success", message: "Payment confirmed. Your account is activated." };
       return { ok: false, status: "failed", message: payload.data?.gateway_response ?? "The payment was not completed." };
     }
 

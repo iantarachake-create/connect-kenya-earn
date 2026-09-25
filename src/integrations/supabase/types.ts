@@ -802,6 +802,18 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
+      record_registration_payment: {
+        Args: {
+          _amount?: number
+          _phone?: string
+          _raw?: Json
+          _reference: string
+          _status: string
+          _token: string
+          _user_id?: string
+        }
+        Returns: string
+      }
       request_withdrawal: {
         Args: { _amount: number; _phone: string }
         Returns: string
