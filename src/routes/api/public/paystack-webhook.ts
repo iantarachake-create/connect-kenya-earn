@@ -14,7 +14,7 @@ export const Route = createFileRoute("/api/public/paystack-webhook")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const secret = process.env["PAYSTACK_SECRET_KEY"];
+        const secret = process.env["PAYSTACK_SECRET_KEY"]?.trim().replace(/^['"]|['"]$/g, "");
         if (!secret) return new Response("Not configured", { status: 503 });
 
         const body = await request.text();
