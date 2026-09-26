@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Brand } from "./brand";
+import { ThemeToggle } from "./theme-toggle";
 import { Button } from "./ui/button";
 
 const links = [
@@ -19,10 +20,14 @@ export function PublicShell({ children }: { children: ReactNode }) {
           {links.map(([to,label]) => <Link key={to} to={to} className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground" activeProps={{className:"text-primary"}}>{label}</Link>)}
         </nav>
         <div className="hidden items-center gap-2 sm:flex">
+          <ThemeToggle />
           <Button asChild variant="ghost"><Link to="/auth" search={{mode:"login"}}>Log in</Link></Button>
           <Button asChild><Link to="/auth" search={{mode:"signup"}}>Join EARNPESA</Link></Button>
         </div>
-        <Button size="icon" variant="ghost" className="sm:hidden" aria-label="Toggle menu" onClick={() => setOpen(!open)}>{open ? <X/> : <Menu/>}</Button>
+        <div className="flex items-center gap-1 sm:hidden">
+          <ThemeToggle />
+          <Button size="icon" variant="ghost" aria-label="Toggle menu" onClick={() => setOpen(!open)}>{open ? <X/> : <Menu/>}</Button>
+        </div>
       </div>
       {open && <nav className="page-shell grid gap-1 border-t py-3 sm:hidden">{links.map(([to,label]) => <Link key={to} to={to} onClick={()=>setOpen(false)} className="rounded-md px-3 py-3 text-sm font-semibold hover:bg-muted">{label}</Link>)}<Link to="/auth" search={{mode:"login"}} className="rounded-md px-3 py-3 text-sm font-semibold text-primary">Log in / Join</Link></nav>}
     </header>

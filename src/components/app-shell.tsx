@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Brand } from "./brand";
+import { ThemeToggle } from "./theme-toggle";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTitle } from "./ui/sheet";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
@@ -105,6 +106,7 @@ export function AppShell({ title, children }: { title: string; children: ReactNo
             <h1 className="text-lg font-bold">{title}</h1>
           </div>
           <div className="flex items-center gap-1">
+            <ThemeToggle />
             <Notifications unread={me?.unread ?? 0} />
             <Link to="/profile" className="ml-2 grid size-9 place-items-center rounded-full bg-secondary text-xs font-bold text-primary" aria-label="Profile">{initials || "EP"}</Link>
           </div>
