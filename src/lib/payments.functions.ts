@@ -42,7 +42,7 @@ export const startRegistrationPayment = createServerFn({ method: "POST" })
     const intl = normalizeKenyanPhone(data.phone);
     const local = toLocalKenyanPhone(data.phone);
     if (!intl || !local) {
-      return { ok: false, status: "failed", message: "Enter a valid Kenyan number, e.g. 0111385747 or +254111385747." };
+      return { ok: false, status: "failed", message: "Enter a valid Kenyan number, e.g. 012345678 or +25412345678." };
     }
 
     const { data: profile } = await supabase

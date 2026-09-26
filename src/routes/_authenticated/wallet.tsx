@@ -72,7 +72,7 @@ function Wallet() {
             </div>
             <div>
               <Label htmlFor="ph">M-Pesa number</Label>
-              <Input id="ph" className="mt-2 h-11" inputMode="tel" placeholder="0711385747" value={phone} onChange={(e) => setPhone(e.target.value)} />
+              <Input id="ph" className="mt-2 h-11" inputMode="tel" placeholder="0712345678" value={phone} onChange={(e) => setPhone(e.target.value)} />
               <p className="mt-1 text-xs text-muted-foreground">{KENYAN_PHONE_HINT}</p>
             </div>
             {amt > available && <p className="text-xs text-destructive">Amount is more than your available balance.</p>}
