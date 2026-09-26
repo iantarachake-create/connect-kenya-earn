@@ -152,7 +152,7 @@ export const requestWithdrawal = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     if (!(await isPaid(context.userId))) return { ok: false, message: "Pay the KSH 300 registration fee before withdrawing." };
     const phone = normalizeKenyanPhone(data.phone);
-    if (!phone) return { ok: false, message: "Enter a valid Kenyan number, e.g. 0711385747 or +254111385747." };
+    if (!phone) return { ok: false, message: "Enter a valid Kenyan number, e.g. 0712345678 or +25412345678." };
     const db = await admin();
     const { count } = await db
       .from("withdrawal_requests")

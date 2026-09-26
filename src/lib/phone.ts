@@ -1,5 +1,5 @@
-// Kenyan phone helpers. Accepts 0111385747, 0711385747, +254111385747,
-// 254711385747 and 711385747 / 111385747.
+// Kenyan phone helpers. Accepts 012345678, 0712345678, +25412345678,
+// 254712345678 and 712345678 / 12345678.
 export function normalizeKenyanPhone(input: string): string | null {
   const digits = (input ?? "").replace(/[^\d]/g, "");
   let local = "";
@@ -10,10 +10,10 @@ export function normalizeKenyanPhone(input: string): string | null {
   return `254${local}`;
 }
 
-/** 0-prefixed local format, e.g. 0111385747 — what Kenyan providers display. */
+/** 0-prefixed local format, e.g. 012345678 — what Kenyan providers display. */
 export function toLocalKenyanPhone(input: string): string | null {
   const intl = normalizeKenyanPhone(input);
   return intl ? `0${intl.slice(3)}` : null;
 }
 
-export const KENYAN_PHONE_HINT = "Use 0111385747, 0711385747 or +254111385747";
+export const KENYAN_PHONE_HINT = "Use 012345678, 0712345678 or +25412345678";
